@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   )}`;
   saveTimeToServer();
   showTimeWorked();
-const apiBaseUrl = "https://taskybackend-sepia.vercel.app/api/v1/";
+
   const workedTime = document.querySelector("#workedTime");
   const percentageTime = document.querySelector("#timePercentage");
   
@@ -80,7 +80,7 @@ const apiBaseUrl = "https://taskybackend-sepia.vercel.app/api/v1/";
       return;
     }
   
-    fetch(`${apiBaseUrl}users/time`, {
+    fetch("http://localhost:3000/api/v1/users/time", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -130,7 +130,7 @@ const apiBaseUrl = "https://taskybackend-sepia.vercel.app/api/v1/";
 
   // Displaying the time worked both in percentage and seconds on the dashboard
   function showTimeWorked() {
-    fetch(`${apiBaseUrl}users/time`, {
+    fetch(`http://localhost:3000/api/v1/users/time`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -229,7 +229,7 @@ function logoutUser() {
   // Show loading alert
   showCustomAlert('Logging out...', 'info');
   
-  fetch(`${apiBaseUrl}users/logout`, {
+  fetch('http://localhost:3000/api/v1/users/logout', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,

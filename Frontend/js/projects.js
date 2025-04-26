@@ -1,5 +1,4 @@
 //  Initiate the projects dashboard
-const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/api/v1/'; // Replace with your actual API base URL
 function isTokenExpired(token) {
   if (!token) {
     // window.location.href = './html/loginSignup.html'; // Redirect to login page
@@ -126,8 +125,7 @@ document.querySelectorAll('.filter-btn').forEach(button => {
 
 async function fetchProjects() {
 try {
-  const response = await fetch(`${apiBaseUrl}projects`
-    , {
+  const response = await fetch("http://localhost:3000/api/v1/projects", {
       headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`
       }
@@ -1073,7 +1071,7 @@ async function createNewProject() {
   
   try {
     // Important: Use the correct endpoint URL
-    const apiUrl = `http://localhost:3000/api/v1/projects/`;
+    const apiUrl = "http://localhost:3000/api/v1/projects/";
     console.log(`Sending request to: ${apiUrl}`);
     
     const response = await fetch(apiUrl, {

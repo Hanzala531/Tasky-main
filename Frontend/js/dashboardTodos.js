@@ -1,4 +1,3 @@
-const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/api/v1/'; // Base URL for the API
 function isTokenExpired(token) {
   if (!token) {
     // window.location.href = './html/loginSignup.html'; // Redirect to login page
@@ -38,7 +37,7 @@ function fetchTodos() {
   const token = localStorage.getItem('token');
   const todoList = document.getElementById('todoList');
   
-  fetch(`${apiBaseUrl}todos`, {
+  fetch('http://localhost:3000/api/v1/todos', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -141,7 +140,7 @@ function fetchTodos() {
 function updateTodoStatus(todoId, status) {
   const token = localStorage.getItem('token');
   
-  fetch(`${apiBaseUrl}todos/${todoId}`, {
+  fetch(`http://localhost:3000/api/v1/todos/${todoId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -237,7 +236,7 @@ function showCustomAlert(title, message, type) {
 
 async function fetchProjects() {
 try {
-const response = await fetch(`${apiBaseUrl}projects`, {
+const response = await fetch("http://localhost:3000/api/v1/projects", {
 headers: {
     "Authorization": `Bearer ${localStorage.getItem('token')}`
 }
@@ -267,7 +266,7 @@ fetchProjects();
 
 async function fetchTeams() {
 try {
-const response = await fetch(`${apiBaseUrl}teams`, {
+const response = await fetch("http://localhost:3000/api/v1/teams", {
 headers: {
   "Authorization": `Bearer ${localStorage.getItem('token')}`
 }

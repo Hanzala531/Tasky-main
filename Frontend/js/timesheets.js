@@ -13,7 +13,7 @@
         return decodedPayload.exp < currentTime; // Compare expiration time
       }
 
-const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/api/v1/'; // Base URL for API requests
+
       const token = localStorage.getItem('token');
       if (isTokenExpired(token)) {
         console.log('Token is expired');
@@ -35,7 +35,7 @@ async function fetchTimesheets() {
       return;
     }
 
-    const response = await fetch(`${apiBaseUrl}timesheets`, {
+    const response = await fetch('http://localhost:3000/api/v1/timesheets', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

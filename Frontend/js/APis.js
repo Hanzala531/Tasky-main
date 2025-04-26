@@ -1,5 +1,5 @@
 // Add all notification-related code here
-const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/api/v1/'; // Replace with your actual API base URL
+
 // Set up notification functionality when document is ready
 document.addEventListener('DOMContentLoaded', function() {
   setupNotifications();
@@ -54,7 +54,7 @@ async function fetchNotifications() {
   notifDropdown.innerHTML = '<p>Loading notifications...</p>';
   
   try {
-    const response = await fetch(`${apiBaseUrl}notifications/`, {
+    const response = await fetch("http://localhost:3000/api/v1/notifications/", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -176,7 +176,7 @@ async function handleInvitation(teamId, action, notificationId) {
   const status = action === "accept" ? "accepted" : "declined";
   
   try {
-    const response = await fetch(`${apiBaseUrl}teams/${teamId}/respond`, {
+    const response = await fetch(`http://localhost:3000/api/v1/teams/${teamId}/respond`, {
       method: "PUT",
       headers: {
         "Authorization": `Bearer ${token}`,

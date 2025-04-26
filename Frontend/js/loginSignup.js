@@ -6,7 +6,7 @@ function toggleForms() {
     document.getElementById('signupForm').style.display =
         document.getElementById('signupForm').style.display === 'none' ? 'block' : 'none';
 }
-const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/api/v1/'; // Replace with your actual API base URL
+
 async function signup() {
     const username = document.getElementById('signupUsername').value.trim();
     const email = document.getElementById('signupEmail').value.trim();
@@ -20,7 +20,7 @@ async function signup() {
     }
 
     try {
-        const response = await fetch(`${apiBaseUrl}users/register`, {
+        const response = await fetch('http://localhost:3000/api/v1/users/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password })
@@ -52,7 +52,7 @@ async function login() {
     }
 
     try {
-        const response = await fetch(`${apiBaseUrl}users/login`, {
+        const response = await fetch('http://localhost:3000/api/v1/users/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),

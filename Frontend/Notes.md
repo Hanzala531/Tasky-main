@@ -238,6 +238,8 @@ const addTask = async (newTask) => {
 3️⃣ **Fetch & manage data** (State management, API calls).  
 4️⃣ **Implement features** (Time tracking, project progress, member activities).  
 5️⃣ **Ensure responsiveness & dark mode support**.  
-6️⃣ **Test and deploy the application**.
+6️⃣ **Test and deploy the application**.  
 
-tommorow is monday and office is starting from monday
+---
+
+Would you like more details on any specific part? 🚀
