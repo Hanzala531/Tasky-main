@@ -14,7 +14,7 @@ if (!process.env.VERCEL && !fs.existsSync(uploadDir)) {
 // Set up Multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir);
+    cb(null, uploadDir); // Use the appropriate directory
   },
   filename: (req, file, cb) => {
     // Replace spaces with underscores to avoid URL issues
