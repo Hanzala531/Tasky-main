@@ -1,12 +1,13 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 
 // Define the upload directory
-const uploadDir = path.join(process.cwd(), 'public', 'temp');
+const uploadDir = process.env.VERCEL ? os.tmpdir() : path.join(process.cwd(), 'public', 'temp');
 
-// Ensure the directory exists
-if (!fs.existsSync(uploadDir)) {
+// Ensure the directory exists (only for local development)
+if (!process.env.VERCEL && !fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
