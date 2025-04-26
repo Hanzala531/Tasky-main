@@ -13,7 +13,7 @@
         return decodedPayload.exp < currentTime; // Compare expiration time
       }
 
-const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/'; // Base URL for API requests
+const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/api/v1/'; // Base URL for API requests
       const token = localStorage.getItem('token');
       if (isTokenExpired(token)) {
         console.log('Token is expired');

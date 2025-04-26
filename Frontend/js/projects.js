@@ -1,5 +1,5 @@
 //  Initiate the projects dashboard
-const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/';
+const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/api/v1/'; // Replace with your actual API base URL
 function isTokenExpired(token) {
   if (!token) {
     // window.location.href = './html/loginSignup.html'; // Redirect to login page

@@ -6,7 +6,7 @@ function toggleForms() {
     document.getElementById('signupForm').style.display =
         document.getElementById('signupForm').style.display === 'none' ? 'block' : 'none';
 }
-const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/';
+const apiBaseUrl = 'https://taskybackend-sepia.vercel.app/api/v1/'; // Replace with your actual API base URL
 async function signup() {
     const username = document.getElementById('signupUsername').value.trim();
     const email = document.getElementById('signupEmail').value.trim();
