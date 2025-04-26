@@ -13,7 +13,7 @@ import {
   logoutUser,
 } from "../Controllers/user.Contollers.js";
 import { upload } from "../Middlewares/multer.middleware.js";
-import {verifyJWT} from "../Middlewares/auth.middleware.js";
+import {verifyJWT} from "../Middlewares/Auth.middleware.js";
 
 const userRouter = express.Router();
 
