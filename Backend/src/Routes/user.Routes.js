@@ -21,6 +21,10 @@ const reqLog = (req, res, next) => {
   console.log("Request made to  :" + req.originalUrl);
   next();
 };
+
+userRouter.get("/", (req, res) => {
+  res.send("User API");
+});
 // route for getting all users
 userRouter.route("/").get(reqLog, verifyJWT, getAllUsers);
 // route for registering a user
