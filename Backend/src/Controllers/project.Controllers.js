@@ -8,12 +8,17 @@ import  { User } from "../Models/user.Models.js";
 
 const getAllProjects = asyncHandler(async (req, res) => {
   try {
+    // Ensure the user is authenticated
+    if (!req.user || !req.user._id) {
+      return res.status(401).json(new ApiResponse(401, "Unauthorized access"));
+    }
+
     const userId = req.user._id; // Get the requesting user's ID
 
     // Fetch only projects where the user is a member
-    const projects = await Project.find({ members: userId });
+    const projects = await Project.find({ members: userId }).select("name description startDate deadline status");
 
-    if (!projects || projects.length === 0) {
+    if (projects.length === 0) {
       return res.status(404).json(new ApiResponse(404, "No projects found for this user"));
     }
 
@@ -23,7 +28,7 @@ const getAllProjects = asyncHandler(async (req, res) => {
       message: "User-specific projects fetched successfully",
     });
   } catch (error) {
-    console.error("Error fetching user projects:", error);
+    console.error("Error fetching user projects:", error.message, error.stack);
     return res.status(500).json(new ApiResponse(500, "Internal server error"));
   }
 });

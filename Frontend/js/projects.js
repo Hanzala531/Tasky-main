@@ -125,7 +125,7 @@ document.querySelectorAll('.filter-btn').forEach(button => {
 
 async function fetchProjects() {
 try {
-  const response = await fetch("http://localhost:4000/api/v1/projects", {
+  const response = await fetch("https://tasky-backend-one.vercel.app/api/v1/projects", {
       headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`
       }
@@ -283,7 +283,7 @@ function addButtonEventListeners() {
 
 async function deleteProject(projectId) {
   try {
-      const response = await fetch(`http://localhost:4000/api/v1/projects/${projectId}`, {
+      const response = await fetch(`https://tasky-backend-one.vercel.app/api/v1/projects/${projectId}`, {
           method: "DELETE",
           headers: {
               "Authorization": `Bearer ${localStorage.getItem('token')}`
@@ -307,7 +307,7 @@ async function deleteProject(projectId) {
 async function viewProjectDetails(projectId) {
 try {
   // Fetch project details
-  const response = await fetch(`http://localhost:4000/api/v1/projects/${projectId}`, {
+  const response = await fetch(`https://tasky-backend-one.vercel.app/api/v1/projects/${projectId}`, {
       headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`
       }
@@ -759,7 +759,7 @@ if (!name || !startDate || !deadline) {
 }
 
 try {
-  const response = await fetch(`http://localhost:4000/api/v1/projects/${projectId}`, {
+  const response = await fetch(`https://tasky-backend-one.vercel.app/api/v1/projects/${projectId}`, {
       method: "PUT",
       headers: {
           "Content-Type": "application/json",
@@ -812,7 +812,7 @@ if (!name || !email || !role) {
 }
 
 try {
-  const response = await fetch(`http://localhost:4000/api/v1/projects/${projectId}/members`, {
+  const response = await fetch(`https://tasky-backend-one.vercel.app/api/v1/projects/${projectId}/members`, {
       method: "POST",
       headers: {
           "Content-Type": "application/json",
@@ -853,7 +853,7 @@ try {
 // Function to remove a member from project
 async function removeMemberFromProject(projectId, memberId) {
 try {
-  const response = await fetch(`http://localhost:4000/api/v1/projects/${projectId}/members/${memberId}`, {
+  const response = await fetch(`https://tasky-backend-one.vercel.app/api/v1/projects/${projectId}/members/${memberId}`, {
       method: "DELETE",
       headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`
@@ -881,7 +881,7 @@ try {
 }
 async function updateProjectStatus(projectId, newStatus) {
   try {
-      const response = await fetch(`http://localhost:4000/api/v1/projects/${projectId}/updateStatus`, {
+      const response = await fetch(`https://tasky-backend-one.vercel.app/api/v1/projects/${projectId}/updateStatus`, {
           method: "PUT",
           headers: {
               "Content-Type": "application/json",
@@ -920,7 +920,7 @@ async function updateProjectStatusInCard(projectId, newStatus, buttonElement) {
   buttonElement.disabled = true;
   
   try {
-      const response = await fetch(`http://localhost:4000/api/v1/projects/${projectId}/updateStatus`, {
+      const response = await fetch(`https://tasky-backend-one.vercel.app/api/v1/projects/${projectId}/updateStatus`, {
           method: "PUT",
           headers: {
               "Content-Type": "application/json",
@@ -1071,7 +1071,7 @@ async function createNewProject() {
   
   try {
     // Important: Use the correct endpoint URL
-    const apiUrl = "http://localhost:4000/api/v1/projects/";
+    const apiUrl = "https://tasky-backend-one.vercel.app/api/v1/projects/";
     console.log(`Sending request to: ${apiUrl}`);
     
     const response = await fetch(apiUrl, {
