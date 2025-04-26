@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const token = localStorage.getItem('token');
   if (!token || isTokenExpired(token)) {
     // No valid token, redirect to login
-    window.location.replace('../login.html');
+    window.location.replace('html/loginSignup.html');
   }
 });
 
