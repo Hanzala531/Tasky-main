@@ -130,7 +130,10 @@ const registerUser = asyncHandler(async (req, res) => {
       user: createdUser,
       message: "User created successfully",
     });
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error registering user:", error);
+    throw new ApiError(500, "Something went wrong while registering user");
+  }
 });
 
 // controller for adding user avatar
