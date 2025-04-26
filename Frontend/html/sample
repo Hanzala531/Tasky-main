@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasky</title>
+  <link rel="stylesheet" href="../Css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    .content-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      width: calc(100% - 230px);
+      height: 97vh;
+    }
+    .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(100% - 250px);
+  background: white; /* Or any color */
+  z-index: 999; /* Ensure it's always on top */
+}
+
+
+    .projects-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      width: 100%;
+      max-width: 1200px;
+      justify-content: center;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+      flex: 1 1 250px;
+      max-width: 300px;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .project-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .project-description {
+      font-size: 14px;
+      color: #555;
+      margin-top: 5px;
+    }
+    .createBtn{
+        margin-bottom: 20px;
+        position: relative;
+        left : 40%;
+    }
+    .dropdown {
+  display: none;
+  position: absolute;
+  top: 100%; /* Ensures it appears below the user icon */
+  right: 0; /* Aligns it to the right */
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 10px;
+  z-index: 1000; /* Ensures it stays on top */
+  min-width: 150px; /* Prevents it from being too small */
+}
+
+.dropdown.show {
+  display: block;
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="left-sidebar">
+      <div class="left-sidebar-header">
+        <h2>TASKY</h2>
+      </div>
+      <div class="left-sidebar-content">
+        <ul>
+          <li><a id="dashboard" href=".index.html"><img src="../Svg/dasboard.svg" alt="icon-image">Dashboard</a></li>
+          <li><a href="/Analytics.html" id="analytic"><img src="../Svg/analytic.svg" alt="icon-image">Analytic</a></li>
+          <li><a href="#" id="projects"><img src="../Svg/projects.svg" alt="icon-image">Projects</a></li>
+          <li><a href="./html/Teams.html" id="teams"> <img src="../Svg/teams.svg" alt="icon-image">Teams</a></li>
+          <li><a href="./html/timesheets.html" id="timesheets"><img src="../Svg/timesheets.svg" width="20px" alt="icon-image">Timesheets</a></li>
+          <li><a href="./html/todos.html" id="todos"><img src="../Svg/todos.svg" alt="icon-image">Todos</a></li>
+          <!-- <li><a href="#" id="reports"><img src="../Svg/reports.svg" alt="icon-image">Report</a></li> -->
+          <li><a href="./html/settings.html" id="settings"><img src="../Svg/settings.svg" alt="icon-image">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="right-container">
+      <div class="navbar">
+        <div class="navLeft ">
+          <!-- <img src="../Svg/menu.svg" width="20px" alt="Menu icon"> -->
+          <h4>Dashboard</h4>
+        </div>
+        <div class="navCenter">
+          <input type="text" placeholder="Search Project">
+          <img src="../Svg/search.svg" width="20px" alt="search icon">
+        </div>
+        <div class="navRight">
+          <div class="notification">
+            <img src="../Svg/notification.svg" width="25px" alt="notification icon">
+            <div class="notif-dropdown">
+              <p>No new notifications</p>
+            </div>
+          </div>
+          <div class="user">
+            <img src="../Images/user.jpeg" width="30px" alt="user icon">
+            <span id="nameUser">John Doe</span>
+            <div class="dropdown">
+              <a href="#">Profile</a>
+              <a href="#">Settings</a>
+              <a href="#">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-box">
+        <button class="btn btn-dark mb-3 createBtn">+ Create Project</button>
+        <div class="projects-container" id="projectsContainer"></div>
+      </div>
+    </div>
+
+    <script>
+      function isTokenExpired(token) {
+        if (!token) {
+          return true;
+        }
+        try {
+          const payloadBase64 = token.split('.')[1];
+          const decodedPayload = JSON.parse(atob(payloadBase64));
+          const currentTime = Math.floor(Date.now() / 1000);
+          return decodedPayload.exp < currentTime;
+        } catch (error) {
+          return true;
+        }
+      }
+
+      const token = localStorage.getItem('token');
+      if (isTokenExpired(token)) {
+        console.log('Token is expired');
+        localStorage.removeItem('token');
+        window.location.href = './html/loginSignup.html';
+      } else {
+        console.log('Token is valid');
+      }
+
+      async function fetchProjects() {
+        try {
+          const response = await fetch("http://localhost:3000/api/v1/projects");
+          if (!response.ok) {
+            throw new Error("Failed to fetch projects");
+          }
+          let projects = await response.json();
+          const projectsContainer = document.getElementById("projectsContainer");
+        //   console.log(projects.projects);
+        projects = projects.projects;
+        console.log("projects", projects);
+          
+          
+          projectsContainer.innerHTML = "";
+          projects.forEach(project => {
+            const projectCard = document.createElement("div");
+            projectCard.classList.add("project-card");
+            projectCard.innerHTML = `
+              <div class="project-title">${project.name}</div>
+              <div class="project-description">${project.description}</div>
+              <div class="project-members">Members Working\n: ${project.members.join(", ")}</div>
+            `;
+            projectsContainer.appendChild(projectCard);
+          });
+        } catch (error) {
+          console.error("Error loading projects:", error);
+        }
+      }
+      fetchProjects();
+    </script>
+
+    <script src="../js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step Interpolation Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            max-width: 600px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        input {
+            padding: 5px;
+            margin: 10px;
+            width: 150px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Step Interpolation Chart</h2>
+    <canvas id="stepChart"></canvas>
+
+    <div>
+        <input type="number" id="percentageInput" placeholder="Enter percentage (0-100)" min="0" max="100" />
+        <button onclick="addData()">Add Data</button>
+    </div>
+
+    <script>
+        // Initial Data
+        const labels = ["Day 1"];
+        const dataValues = [0]; // Start from 0 to prevent negative default
+
+        // Create Chart
+        const ctx = document.getElementById('stepChart').getContext('2d');
+        const stepChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Dataset",
+                    data: dataValues,
+                    borderColor: "rgba(255,99,132,1)",
+                    backgroundColor: "rgba(255,99,132,0.2)",
+                    borderWidth: 2,
+                    stepped: true, // Enables step interpolation
+                    pointRadius: 5, // Show points on the chart
+                    pointBackgroundColor: "rgba(255,99,132,1)"
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true, // Start Y-axis from 0
+                        suggestedMax: 100  // Max percentage limit
+                    }
+                }
+            }
+        });
+
+        // Function to Add Data Dynamically
+        function addData() {
+            const inputField = document.getElementById('percentageInput');
+            let inputValue = Number(inputField.value.trim());
+
+            if (!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100) {
+                labels.push(`Day ${labels.length + 1}`);
+                dataValues.push(inputValue);
+                stepChart.update();
+                inputField.value = ""; // Clear input field
+            } else {
+                alert("Please enter a valid percentage between 0 and 100.");
+            }
+        }
+    </script>
+
+</body>
+</html>

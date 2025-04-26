@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasky</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../Css/style.css">
+  <style>
+    .navbar{
+      margin-right: 40px !important;
+    }
+    .projects-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center !important;
+      align-items: center;
+      flex-wrap: wrap;
+      padding:  0 10vw;
+      gap: 1rem;
+    }
+    .card-body {
+      /* align-self: center; */
+      width: 600px;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      background-color: #f8f9fa;
+    }
+    
+    /* Improved Custom Alert Styling */
+    .custom-alert {
+      position: fixed;
+      top: 18%;
+      left: 55%;
+      transform: translate(-50%, -50%) translateY(-20px);
+      padding: 15px 25px;
+      border-radius: 8px;
+      color: white;
+      z-index: 1000;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.4s, transform 0.4s;
+      text-align: center;
+      min-width: 280px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+    
+    .alert-success {
+      background: linear-gradient(145deg, #32b954, #27a844);
+      border-left: 5px solid #218838;
+    }
+    
+    .alert-error {
+      background: linear-gradient(145deg, #dc3545, #c82333);
+      border-left: 5px solid #bd2130;
+    }
+    
+    .alert-info {
+      background: linear-gradient(145deg, #17a2b8, #138496);
+      border-left: 5px solid #117a8b;
+    }
+    
+    .alert-visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) translateY(0);
+    }
+
+    .team-member-email {
+      display: inline-flex;
+      align-items: center;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 30px;
+      padding: 5px 12px;
+      margin: 3px;
+      font-size: 0.9rem;
+    }
+    
+    .team-member-email .btn-close {
+      font-size: 0.7rem;
+      padding: 2px;
+    }
+    
+    #teamMembersList {
+      min-height: 40px;
+      border: 1px dashed #ccc;
+      border-radius: 4px;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="left-sidebar">
+      <div class="left-sidebar-header">
+        <h2>TASKY</h2>
+      </div>
+      <div class="left-sidebar-content">
+        <ul>
+          <li><a id="dashboard" href="../index.html"><img src="../Svg/dasboard.svg" alt="icon-image">Dashboard</a></li>
+          <li><a href="./Analytics.html" id="analytic"><img src="../Svg/analytic.svg" alt="icon-image">Analytic</a></li>
+          <li><a href="#" id="projects"><img src="../Svg/projects.svg" alt="icon-image">Projects</a></li>
+          <li><a href="./Teams.html" id="Teams"> <img src="../Svg/teams.svg" alt="icon-image">Teams</a></li>
+          <li><a href="./timesheets.html" id="Timesheets"><img src="../Svg/timesheets.svg" width="20px" alt="icon-image">Timesheets</a></li>
+          <li><a href="./todos.html" id="todos"><img src="../Svg/todos.svg" alt="icon-image">Todos</a></li>
+          <!-- <li><a href="#" id="reports"><img src="../Svg/reports.svg" alt="icon-image">Report</a></li> -->
+          <li><a href="./settings.html" id="settings"><img src="../Svg/settings.svg" alt="icon-image">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="right-container">
+      <div class="navbar">
+        <div class="navLeft ">
+          <!-- <img src="../Svg/menu.svg" width="20px" alt="Menu icon"> -->
+          <h4>Projects</h4>
+        </div>
+        <div class="navCenter">
+          <input type="text" placeholder="Search Project">
+          <img src="../Svg/search.svg" width="20px" alt="search icon">
+        </div>
+        <div class="navRight">
+          <!-- Notification Icon -->
+          <div class="notification">
+            <img src="../Svg/notification.svg" id="notify" width="25px" alt="notification icon">
+            <div class="notif-dropdown">
+              <p id="notif-dropdown">No notifications available</p>
+              <!-- Example Notifications -->
+              <!-- <a href="#">New comment on your post</a>
+      <a href="#">Your order has been shipped</a>
+      <a href="#">System update available</a> -->
+            </div>
+          </div>
+
+          <!-- User Profile -->
+          <div class="user">
+            <img src="../Images/user.jpeg" width="30px" alt="user icon">
+            <span id="nameUser">John Doe</span>
+            <div class="dropdown">
+              <a href="#">Profile</a>
+              <a href="#">Settings</a>
+              <a href="#" id="logout-link">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-box">
+        <!-- Add Create Project Button -->
+        <div class="d-flex justify-content-end mb-4 px-5">
+          <button class="btn btn-primary createProjectBtn">
+            <i class="fas fa-plus"></i> Create Project
+          </button>
+        </div>
+       
+        <!-- Projects Container -->
+        <div class="projects-container">
+          <!-- Projects will be loaded here dynamically -->
+        </div>
+      </div>
+
+      <!-- Create Project Modal -->
+      <div class="modal fade" id="createProjectModal" tabindex="-1" aria-labelledby="createProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="createProjectModalLabel">Create New Project</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="createProjectForm">
+                <div class="mb-3">
+                  <label for="projectName" class="form-label">Project Name *</label>
+                  <input type="text" class="form-control" id="projectName" required>
+                </div>
+                <div class="mb-3">
+                  <label for="projectDescription" class="form-label">Project Description *</label>
+                  <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="startDate" class="form-label">Start Date *</label>
+                    <input type="date" class="form-control" id="startDate" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="deadline" class="form-label">Deadline *</label>
+                    <input type="date" class="form-control" id="deadline" required>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="teamMembers" class="form-label">Team Members</label>
+                  <div class="input-group mb-2">
+                    <input type="email" class="form-control" id="teamMembers" placeholder="Enter email address">
+                    <button class="btn btn-outline-primary" type="button" id="addTeamMemberBtn">Add</button>
+                  </div>
+                  <div id="teamMembersList" class="d-flex flex-wrap gap-2 mt-2">
+                    <!-- Added team members will appear here -->
+                  </div>
+                  <div class="form-text">Add team members one by one using the Add button.</div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary" id="submitProject">Create Project</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <!-- Alert container -->
+    <div id="alert-container"></div>
+    
+    <!-- Js for multiple page Functionality -->
+    <script>
+      // Function to show alerts
+      function showAlert(message, type) {
+        const alertContainer = document.getElementById('alert-container');
+        
+        // Create alert element
+        const alertElement = document.createElement('div');
+        alertElement.className = `custom-alert alert-${type}`;
+        alertElement.textContent = message;
+        
+        // Add to container
+        alertContainer.appendChild(alertElement);
+        
+        // Make visible with a small delay for animation
+        setTimeout(() => {
+          alertElement.classList.add('alert-visible');
+        }, 10);
+        
+        // Remove after 2 seconds
+        setTimeout(() => {
+          alertElement.classList.remove('alert-visible');
+          
+          // Remove from DOM after fade out
+          setTimeout(() => {
+            alertContainer.removeChild(alertElement);
+          }, 400);
+        }, 2000);
+      }
+    </script>
+    <script src="../js/APis.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/projects.js"></script>
+    <!-- Js for Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script>
+      // Debug script to check if modal is available and Bootstrap is properly loaded
+      document.addEventListener("DOMContentLoaded", function() {
+        console.log("DOM loaded - Checking for modal element and Bootstrap");
+        
+        // Check if modal element exists
+        const modalElement = document.getElementById('createProjectModal');
+        console.log("Modal element exists:", !!modalElement);
+        
+        // Check if Bootstrap is properly loaded
+        console.log("Bootstrap available:", typeof bootstrap !== 'undefined');
+        console.log("Bootstrap Modal available:", typeof bootstrap !== 'undefined' && typeof bootstrap.Modal !== 'undefined');
+        
+        // Try to initialize the modal
+        if (modalElement && typeof bootstrap !== 'undefined' && typeof bootstrap.Modal !== 'undefined') {
+          console.log("Modal can be initialized");
+          const modal = new bootstrap.Modal(modalElement);
+          console.log("Modal initialized successfully");
+        } else {
+          console.error("Modal cannot be initialized - Check Bootstrap loading");
+        }
+      });
+    </script>
+    <script>
+      // Emergency direct event handlers to ensure buttons work
+      document.addEventListener("DOMContentLoaded", function() {
+        // Check if addTeamMember function exists and is available
+        if (typeof window.addTeamMember !== 'function') {
+          console.log("Adding direct addTeamMember function");
+          
+          // Define emergency addTeamMember function
+          window.addTeamMember = function() {
+            const emailInput = document.getElementById("teamMembers");
+            const email = emailInput.value.trim();
+            
+            if (!email) return;
+            
+            // Quick email validation
+            if (!email.includes('@')) {
+              alert("Please enter a valid email address");
+              return;
+            }
+            
+            // Create a simple email chip
+            const teamMembersList = document.getElementById("teamMembersList");
+            if (teamMembersList.innerHTML.includes('No emails added yet')) {
+              teamMembersList.innerHTML = '';
+            }
+            
+            const chip = document.createElement('div');
+            chip.className = 'team-member-email badge bg-light text-dark d-flex align-items-center p-2';
+            chip.dataset.email = email;
+            chip.innerHTML = `
+              ${email}
+              <button type="button" class="btn-close ms-2" aria-label="Remove"></button>
+            `;
+            
+            // Add remove functionality
+            chip.querySelector('.btn-close').onclick = function() {
+              teamMembersList.removeChild(chip);
+              if (teamMembersList.children.length === 0) {
+                teamMembersList.innerHTML = '<p class="text-muted">No emails added yet</p>';
+              }
+            };
+            
+            teamMembersList.appendChild(chip);
+            emailInput.value = '';
+          };
+        }
+        
+        // Add direct event handler to Add button
+        const addBtn = document.getElementById('addTeamMemberBtn');
+        if (addBtn) {
+          addBtn.onclick = function(e) {
+            e.preventDefault();
+            console.log("Add button clicked (direct handler)");
+            
+            // Call the addTeamMember function
+            if (typeof window.addTeamMember === 'function') {
+              window.addTeamMember();
+            } else {
+              console.error("addTeamMember function not available");
+            }
+          };
+        }
+        
+        // Also handle Enter key in the input field
+        const emailInput = document.getElementById('teamMembers');
+        if (emailInput) {
+          emailInput.onkeypress = function(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              if (typeof window.addTeamMember === 'function') {
+                window.addTeamMember();
+              }
+            }
+          };
+        }
+      });
+    </script>
+    <script>
+      // Add a direct emergency action to the Create Project button
+      document.addEventListener('DOMContentLoaded', function() {
+        // Debug form submission directly
+        const directCreateProject = async function() {
+          console.log("Direct create project function executed");
+          try {
+            const projectName = document.getElementById("projectName").value.trim();
+            const projectDescription = document.getElementById("projectDescription").value.trim();
+            const startDate = document.getElementById("startDate").value;
+            const deadline = document.getElementById("deadline").value;
+            
+            // Get team members
+            const teamMemberElements = document.querySelectorAll('.team-member-email');
+            const teamMembers = Array.from(teamMemberElements).map(el => el.dataset.email);
+            
+            console.log("Form data to send:", {
+              name: projectName,
+              description: projectDescription,
+              startDate,
+              deadline,
+              members: teamMembers
+            });
+            
+            const response = await fetch("http://localhost:3000/api/v1/projects/create", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+              },
+              body: JSON.stringify({
+                name: projectName,
+                description: projectDescription,
+                startDate: startDate,
+                deadline: deadline,
+                members: teamMembers
+              })
+            });
+            
+            console.log("Direct API response status:", response.status);
+            
+            const result = await response.json();
+            console.log("Direct API response data:", result);
+            
+            if (result.success) {
+              alert("Project created successfully!");
+              // Close modal and refresh
+              const modal = bootstrap.Modal.getInstance(document.getElementById('createProjectModal'));
+              if (modal) modal.hide();
+              location.reload();
+            } else {
+              alert("Error: " + (result.message || "Failed to create project"));
+            }
+          } catch (err) {
+            console.error("Direct API error:", err);
+            alert("Error creating project: " + err.message);
+          }
+        };
+        
+        // Add direct handler to submit button as a backup
+        const submitBtn = document.getElementById('submitProject');
+        if (submitBtn) {
+          submitBtn.addEventListener('click', function(e) {
+            console.log("Submit button clicked (direct handler)");
+            e.preventDefault();
+            
+            // Try the window function first
+            if (typeof window.createNewProject === 'function') {
+              window.createNewProject();
+            } else {
+              // Fall back to direct submission
+              console.log("Falling back to direct submission");
+              directCreateProject();
+            }
+          });
+        }
+      });
+   
+      // Direct emergency handler for the submit button
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('Emergency form handler added');
+        
+        // Monitor the team members list for changes
+        const teamMembersList = document.getElementById('teamMembersList');
+        if (teamMembersList) {
+          const observer = new MutationObserver(function(mutations) {
+            console.log('Team members list changed:', 
+              Array.from(document.querySelectorAll('.team-member-email')).map(el => el.dataset.email)
+            );
+          });
+          
+          observer.observe(teamMembersList, { childList: true, subtree: true });
+        }
+        
+        // Add direct handler to form
+        const form = document.getElementById('createProjectForm');
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Form submitted directly');
+            
+            if (typeof window.createNewProject === 'function') {
+              window.createNewProject();
+            } else {
+              console.error('createNewProject function not found in global scope');
+            }
+          });
+        }
+        
+        // Add direct handler to submit button
+        const submitBtn = document.getElementById('submitProject');
+        if (submitBtn) {
+          submitBtn.onclick = function(e) {
+            e.preventDefault();
+            console.log('Direct submit button handler triggered');
+            
+            // Get all form values directly
+            const projectName = document.getElementById('projectName').value.trim();
+            const projectDescription = document.getElementById('projectDescription').value.trim();
+            const startDate = document.getElementById('startDate').value;
+            const deadline = document.getElementById('deadline').value;
+            
+            // Get team members
+            const teamMemberEmails = Array.from(document.querySelectorAll('.team-member-email'))
+              .map(el => el.dataset.email);
+              
+            console.log('Form data collected directly:', {
+              name: projectName,
+              description: projectDescription,
+              startDate,
+              deadline,
+              members: teamMemberEmails
+            });
+            
+            // Try the window function, if available
+            if (typeof window.createNewProject === 'function') {
+              window.createNewProject();
+            } else {
+              // Direct API call as fallback
+              console.log('Falling back to direct API call');
+              
+              fetch("http://localhost:3000/api/v1/projects/create", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                  name: projectName,
+                  description: projectDescription,
+                  startDate: startDate,
+                  deadline: deadline,
+                  members: teamMemberEmails
+                })
+              })
+              .then(response => response.json())
+              .then(data => {
+                console.log('Direct API response:', data);
+                
+                if (data.success) {
+                  alert('Project created successfully!');
+                  
+                  // Close modal and refresh
+                  try {
+                    const modalElement = document.getElementById('createProjectModal');
+                    const modal = bootstrap.Modal.getInstance(modalElement);
+                    if (modal) modal.hide();
+                  } catch (err) {
+                    console.error('Error closing modal:', err);
+                  }
+                  
+                  location.reload();
+                } else {
+                  alert('Error: ' + (data.message || 'Failed to create project'));
+                }
+              })
+              .catch(err => {
+                console.error('Direct API call error:', err);
+                alert('Error creating project: ' + err.message);
+              });
+            }
+          };
+        }
+      });
+    </script>
+
+  </div>
+</body>
+
+</html>

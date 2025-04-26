@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasky</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../Css/style.css">
+  <style>
+    .navbar{
+      margin-right: 40px !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="left-sidebar">
+      <div class="left-sidebar-header">
+        <h2>TASKY</h2>
+      </div>
+      <div class="left-sidebar-content">
+        <ul>
+          <li><a id="dashboard" href="../index.html"><img src="../Svg/dasboard.svg" alt="icon-image">Dashboard</a></li>
+          <li><a href="./Analytics.html" id="analytic"><img src="../Svg/analytic.svg" alt="icon-image">Analytic</a></li>
+          <li><a href="./projects.html" id="projects"><img src="../Svg/projects.svg" alt="icon-image">Projects</a></li>
+          <li><a href="./Teams.html" id="Teams"> <img src="../Svg/teams.svg" alt="icon-image">Teams</a></li>
+          <li><a href="#" id="Timesheets"><img src="../Svg/timesheets.svg" width="20px" alt="icon-image">Timesheets</a></li>
+          <li><a href="./todos.html" id="todos"><img src="../Svg/todos.svg" alt="icon-image">Todos</a></li>
+          <!-- <li><a href="#" id="reports"><img src="../Svg/reports.svg" alt="icon-image">Report</a></li> -->
+          <li><a href="./settings.html" id="settings"><img src="../Svg/settings.svg" alt="icon-image">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="right-container">
+      <div class="navbar">
+        <div class="navLeft ">
+          <!-- <img src="../Svg/menu.svg" width="20px" alt="Menu icon"> -->
+          <h4>Dashboard</h4>
+        </div>
+        <div class="navCenter">
+          <input type="text" placeholder="Search Project">
+          <img src="../Svg/search.svg" width="20px" alt="search icon">
+        </div>
+        <div class="navRight">
+  <!-- Notification Icon -->
+  <div class="notification">
+    <img src="../Svg/notification.svg" id="notify" width="25px" alt="notification icon">
+    <div class="notif-dropdown">
+      <p id="notif-dropdown">No notifications available</p>
+      <!-- Example Notifications -->
+      <!-- <a href="#">New comment on your post</a>
+<a href="#">Your order has been shipped</a>
+<a href="#">System update available</a> -->
+    </div>
+  </div>
+
+  <!-- User Profile -->
+  <div class="user">
+    <img src="../Images/user.jpeg" width="30px" alt="user icon">
+    <span id="nameUser">John Doe</span>
+    <div class="dropdown">
+      <a href="#">Profile</a>
+      <a href="#">Settings</a>
+      <a href="#" id="logout-link">Logout</a>
+    </div>
+  </div>
+</div>
+
+      </div>
+
+      <div class="content-box">
+        </div>
+
+    </div>
+    
+
+    <!-- Js for multiple page Functionality -->
+     <script src="../js/timesheets.js"></script>
+    <script src="../js/APis.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasky - Timesheets</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../Css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .navbar {
+      margin-right: 40px !important;
+    }
+
+    .chart-container {
+      position: relative;
+      margin: 20px 0;
+      height: 300px;
+      width: 100%;
+    }
+
+    .card {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+      padding: 15px;
+      font-weight: bold;
+    }
+
+    /* Updated chart-grid style to ensure full-width columns */
+    .chart-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .stats-card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .stats-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #4361ee;
+    }
+
+    .stats-text {
+      color: #6c757d;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="left-sidebar">
+      <div class="left-sidebar-header">
+        <h2>TASKY</h2>
+      </div>
+      <div class="left-sidebar-content">
+        <ul>
+          <li><a id="dashboard" href="../index.html"><img src="../Svg/dasboard.svg" alt="icon-image">Dashboard</a></li>
+          <li><a href="#" id="analytic"><img src="../Svg/analytic.svg" alt="icon-image">Analytic</a></li>
+          <li><a href="./projects.html" id="projects"><img src="../Svg/projects.svg" alt="icon-image">Projects</a></li>
+          <li><a href="./Teams.html" id="Teams"> <img src="../Svg/teams.svg" alt="icon-image">Teams</a></li>
+          <li><a href="./timesheets.html" id="Timesheets" class="active"><img src="../Svg/timesheets.svg" width="20px"
+                alt="icon-image">Timesheets</a></li>
+          <li><a href="./todos.html" id="todos"><img src="../Svg/todos.svg" alt="icon-image">Todos</a></li>
+          <li><a href="./settings.html" id="settings"><img src="../Svg/settings.svg" alt="icon-image">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="right-container">
+      <div class="navbar">
+        <div class="navLeft">
+          <h4>Timesheets</h4>
+        </div>
+        <div class="navCenter">
+          <input type="text" placeholder="Search Project">
+          <img src="../Svg/search.svg" width="20px" alt="search icon">
+        </div>
+        <div class="navRight">
+          <div class="notification">
+            <img src="../Svg/notification.svg" id="notify" width="25px" alt="notification icon">
+            <div class="notif-dropdown">
+              <p id="notif-dropdown">No notifications available</p>
+              <!-- Example Notifications -->
+              <!-- <a href="#">New comment on your post</a>
+      <a href="#">Your order has been shipped</a>
+      <a href="#">System update available</a> -->
+            </div>
+          </div>
+
+          <div class="user">
+            <img src="../Images/user.jpeg" width="30px" alt="user icon">
+            <span id="nameUser">John Doe</span>
+            <div class="dropdown">
+              <a href="#">Profile</a>
+              <a href="#">Settings</a>
+              <a href="#" id="logout-link">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-box">
+        <div class="container mt-4">
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="stats-card">
+                <div class="stats-number" id="totalHours">0</div>
+                <div class="stats-text">Total Hours</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stats-card">
+                <div class="stats-number" id="avgHours">0</div>
+                <div class="stats-text">Average Hours</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stats-card">
+                <div class="stats-number" id="maxHours">0</div>
+                <div class="stats-text">Maximum Hours</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stats-card">
+                <div class="stats-number" id="entriesCount">0</div>
+                <div class="stats-text">Total Entries</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Line Chart - Full Width -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  Hours Logged Over Time (Line Chart)
+                </div>
+                <div class="card-body">
+                  <div class="chart-container">
+                    <canvas id="lineChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Individual Charts in Separate Rows -->
+          <!-- Bar Chart -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  Hours Distribution (Bar Chart)
+                </div>
+                <div class="card-body">
+                  <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pie Chart -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  Hours by Range (Pie Chart)
+                </div>
+                <div class="card-body">
+                  <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Donut Chart -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  Hours by Month (Donut Chart)
+                </div>
+                <div class="card-body">
+                  <div class="chart-container">
+                    <canvas id="donutChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Polar Area Chart -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  Weekly Hours (Polar Area Chart)
+                </div>
+                <div class="card-body">
+                  <div class="chart-container">
+                    <canvas id="polarChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Token validation check
+    function isTokenExpired(token) {
+      if (!token) {
+        return true;
+      }
+      const payloadBase64 = token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(payloadBase64));
+      const currentTime = Math.floor(Date.now() / 1000);
+      return decodedPayload.exp < currentTime;
+    }
+
+    const token = localStorage.getItem('token');
+    if (isTokenExpired(token)) {
+      console.log('Token is expired');
+      window.location.href = './loginSignup.html';
+      localStorage.removeItem('token');
+    } else {
+      console.log('Token is valid');
+      fetchTimesheetData();
+    }
+
+    // Convert milliseconds to hours with decimal precision
+    function msToHours(milliseconds) {
+      return (milliseconds / (1000 * 60 * 60)).toFixed(2);
+    }
+
+    // Format hours for display
+    function formatHours(hours) {
+      const h = Math.floor(hours);
+      const m = Math.round((hours - h) * 60);
+      return `${h}h ${m}m`;
+    }
+
+    // Fetch timesheet data
+    async function fetchTimesheetData() {
+      try {
+        const response = await fetch('http://localhost:3000/api/v1/timesheets', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch timesheet data');
+        }
+
+        const data = await response.json();
+        if (data.data && Array.isArray(data.data)) {
+          processTimesheetData(data.data);
+        } else {
+          console.error('Invalid data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching timesheet data:', error);
+      }
+    }
+
+    // Process timesheet data and create charts
+    function processTimesheetData(timesheets) {
+      // Sort timesheets by date
+      timesheets.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      // Convert milliseconds to hours
+      const processedTimesheets = timesheets.map(entry => {
+        return {
+          ...entry,
+          hoursValue: msToHours(entry.hours)
+        };
+      });
+
+      // Calculate statistics
+      const totalHoursRaw = processedTimesheets.reduce((sum, entry) => sum + parseFloat(entry.hoursValue), 0);
+      const totalHours = totalHoursRaw.toFixed(2);
+      const avgHours = (totalHoursRaw / processedTimesheets.length).toFixed(2);
+      const maxHours = Math.max(...processedTimesheets.map(entry => parseFloat(entry.hoursValue))).toFixed(2);
+
+      // Update stats cards
+      document.getElementById('totalHours').textContent = formatHours(totalHours);
+      document.getElementById('avgHours').textContent = formatHours(avgHours);
+      document.getElementById('maxHours').textContent = formatHours(maxHours);
+      document.getElementById('entriesCount').textContent = processedTimesheets.length;
+
+      // Format dates for charts
+      const dates = processedTimesheets.map(entry => {
+        const date = new Date(entry.date);
+        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+      });
+
+      const hours = processedTimesheets.map(entry => entry.hoursValue);
+
+      // Create Line Chart
+      createLineChart(dates, hours);
+
+      // Create Bar Chart
+      createBarChart(dates, hours);
+
+      // Create Pie Chart
+      createPieChart(hours);
+
+      // Create Donut Chart (Hours by Month)
+      createDonutChart(processedTimesheets);
+
+      // Create Polar Area Chart (Weekly Data)
+      createPolarChart(processedTimesheets);
+    }
+
+    // Create Line Chart
+    function createLineChart(labels, data) {
+      const ctx = document.getElementById('lineChart').getContext('2d');
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Hours Logged',
+            data: data,
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Hours'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Date'
+              }
+            }
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                return formatHours(tooltipItem.yLabel);
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Create Bar Chart
+    function createBarChart(labels, data) {
+      const ctx = document.getElementById('barChart').getContext('2d');
+
+      // Use last 10 entries for better visualization
+      const last10Labels = labels.slice(-10);
+      const last10Data = data.slice(-10);
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: last10Labels,
+          datasets: [{
+            label: 'Hours Logged',
+            data: last10Data,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(255, 206, 86, 0.7)',
+              'rgba(75, 192, 192, 0.7)',
+              'rgba(153, 102, 255, 0.7)',
+              'rgba(255, 159, 64, 0.7)',
+              'rgba(199, 199, 199, 0.7)',
+              'rgba(83, 102, 255, 0.7)',
+              'rgba(40, 159, 64, 0.7)',
+              'rgba(210, 199, 199, 0.7)'
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 206, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(153, 102, 255)',
+              'rgb(255, 159, 64)',
+              'rgb(199, 199, 199)',
+              'rgb(83, 102, 255)',
+              'rgb(40, 159, 64)',
+              'rgb(210, 199, 199)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Hours'
+              }
+            }
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                return formatHours(tooltipItem.yLabel);
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Create Pie Chart (Hours by Range)
+    function createPieChart(hours) {
+      const ctx = document.getElementById('pieChart').getContext('2d');
+
+      // Group hours by range
+      const ranges = {
+        '0-1h': 0,
+        '1-2h': 0,
+        '2-5h': 0,
+        '5-10h': 0,
+        '10h+': 0
+      };
+
+      hours.forEach(hour => {
+        const h = parseFloat(hour);
+        if (h <= 1) ranges['0-1h']++;
+        else if (h <= 2) ranges['1-2h']++;
+        else if (h <= 5) ranges['2-5h']++;
+        else if (h <= 10) ranges['5-10h']++;
+        else ranges['10h+']++;
+      });
+
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(ranges),
+          datasets: [{
+            label: 'Hours Range Distribution',
+            data: Object.values(ranges),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(255, 206, 86, 0.7)',
+              'rgba(75, 192, 192, 0.7)',
+              'rgba(153, 102, 255, 0.7)'
+            ],
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      });
+    }
+
+    // Create Donut Chart (Hours by Month)
+    function createDonutChart(timesheets) {
+      const ctx = document.getElementById('donutChart').getContext('2d');
+
+      // Group hours by month
+      const monthlyHours = {};
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+      timesheets.forEach(entry => {
+        const date = new Date(entry.date);
+        const month = monthNames[date.getMonth()];
+
+        if (!monthlyHours[month]) {
+          monthlyHours[month] = 0;
+        }
+
+        monthlyHours[month] += parseFloat(entry.hoursValue);
+      });
+
+      // Round values for better display
+      for (const month in monthlyHours) {
+        monthlyHours[month] = parseFloat(monthlyHours[month].toFixed(2));
+      }
+
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(monthlyHours),
+          datasets: [{
+            label: 'Monthly Hours',
+            data: Object.values(monthlyHours),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(255, 206, 86, 0.7)',
+              'rgba(75, 192, 192, 0.7)',
+              'rgba(153, 102, 255, 0.7)',
+              'rgba(255, 159, 64, 0.7)'
+            ],
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                const value = data.datasets[0].data[tooltipItem.index];
+                return formatHours(value);
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Create Polar Area Chart (Weekly Data)
+    function createPolarChart(timesheets) {
+      const ctx = document.getElementById('polarChart').getContext('2d');
+
+      // Group by day of week
+      const weekdayHours = {
+        "Sunday": 0,
+        "Monday": 0,
+        "Tuesday": 0,
+        "Wednesday": 0,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 0
+      };
+
+      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+      timesheets.forEach(entry => {
+        const date = new Date(entry.date);
+        const day = weekdays[date.getDay()];
+        weekdayHours[day] += parseFloat(entry.hoursValue);
+      });
+
+      // Round values for better display
+      for (const day in weekdayHours) {
+        weekdayHours[day] = parseFloat(weekdayHours[day].toFixed(2));
+      }
+
+      new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+          labels: Object.keys(weekdayHours),
+          datasets: [{
+            label: 'Weekly Hours Distribution',
+            data: Object.values(weekdayHours),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(255, 206, 86, 0.7)',
+              'rgba(75, 192, 192, 0.7)',
+              'rgba(153, 102, 255, 0.7)',
+              'rgba(255, 159, 64, 0.7)',
+              'rgba(201, 203, 207, 0.7)'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                const value = data.datasets[0].data[tooltipItem.index];
+                return formatHours(value);
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+
+  <script src="../js/APis.js"></script>
+  <script src="../js/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

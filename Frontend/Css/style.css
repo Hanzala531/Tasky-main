@@ -1,0 +1,417 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif !important;
+}
+:root{
+    --leftSideBarNavColor : #ffffff;
+    --rightContainerColor: #ffffff;
+    --rightContentbgc: #F9F9F9;
+}
+
+
+.anchor{
+    text-decoration: none;
+}
+
+.wrapper{
+    background-color: #3b3737;
+}
+
+.left-sidebar{
+    width: 250px;
+    height: 100vh;
+    font-family: 'Nunito Sans';
+    background-color: var(--leftSideBarNavColor) ;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.left-sidebar-header h2{
+    font-weight: normal;
+    font-family:"Nunito Sans";
+    font-weight: 800;
+    font-size: 36px;
+    padding: 20px;
+    color: #0c0c0c;
+}
+
+.left-sidebar ul{
+    list-style: none;
+    /* padding: 20px; */
+    display: flex;
+    font-family: 'Nunito Sans';
+    font-weight: semi-bold;
+    flex-direction: column;
+}
+
+.left-sidebar ul li{
+    padding: 15px 0;
+    border-bottom: 1px solid #ccc;
+   
+}
+
+.left-sidebar ul li a{
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content:flex-start;
+    gap: 20px;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 0 0 #0c0c0c;
+    transition: 0.3s ease;
+}
+
+ul li :hover{
+    scale: 1.06;
+    transition: 0.3s ease;
+}
+
+
+#dashboard{
+  border: 2px solid #0c0c0c;
+  width: 80%;
+  padding: 10px 20px;
+  border-radius: 23px;
+  background-color: #0c0c0c;
+  font-family: "Nunito Sans";
+  font-weight: 600;
+  color: #ebeaea;
+}
+
+
+/* Now starting to style the right part */
+
+.right-container{
+    background-color: var(--rightContainerColor);
+    border-top-left-radius: 30px !important;
+    height: 100%;
+    width: 100%;
+    font-family: 'Nunito Sans';
+    transition: all 0.3s ease;
+}
+
+/* NavBar Styles */
+.navbar{
+    background-color: var(--leftSideBarNavColor);
+    height: 65px;   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #0c0c0c !important;
+    padding: 0 40px;
+    margin-left: 230px;
+    font-family: "Nunito Sans";
+    font-weight: 600;
+}
+
+.navLeft{
+    display: flex;
+    gap: 20px;
+}
+
+
+.navCenter {
+    display: flex;
+    align-items: center; 
+    border: 1px solid #ccc; 
+    border-radius: 25px; 
+    padding: 5px 15px;
+    width: 300px; 
+    background-color: white;
+  }
+  
+  .navCenter input[type="text"] {
+    border: none; 
+    outline: none;
+    flex-grow: 1; 
+    padding: 5px 0; 
+    font-size: 16px; 
+    background-color: transparent; 
+  }
+  
+  .navCenter img {
+    margin-left: 10px; 
+    cursor: pointer; 
+  }
+  
+  .navCenter:hover,
+  .navCenter input[type="text"]:focus-within {
+    border-color: #007bff; 
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+  }
+
+.navRight{
+    display: flex;
+    gap: 20px;
+}
+
+.navRight >img:hover{
+    scale: 1.2;
+    transition: 0.3s ease;
+    cursor: pointer;    
+}
+.user{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin-top: 6px;
+}
+
+.user img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.user :hover{
+    scale: 1.06;
+    transition: 0.3s ease;
+}
+
+.content-box{
+    background-color: var(--rightContentbgc);
+    margin-left: 250px;
+    box-sizing: border-box;
+    border-top-left-radius: 60px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    min-height: 89vh;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-family: "Nunito Sans";
+    font-weight: 600;
+}
+
+.timerBox{
+  position: relative;
+  left: 16.5px;
+}
+
+.box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: calc(33.35% - 20px);
+    box-sizing: border-box;
+    font-family: "nunito sans";
+    font-weight: 600;
+  }
+  
+  .box.full-width {
+    width: calc(100% - 20px);
+}
+
+.two-thirds{ /* Renamed to "double" for clarity */
+    width: calc(50.33% - 20px); /* Effectively double */
+}
+.todoBox{
+  width: calc(100.66% - 20px);
+}
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    /* background-color: transparent; */
+  }
+  
+ #headerBox{
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+  
+  .header-left {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center !important;
+    font-size: 18px;
+  }
+
+  .header-right img{
+    padding-bottom: 10px;
+  }
+
+  
+  .box ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .box ul li {
+    margin-bottom: 5px;
+  }
+
+
+.image{
+    width: 50px;
+    border: 3px solid #f5e7c7;
+    background-color: #f5e7c7;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+
+
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #333; /* Dark gray text */
+}
+
+.more-options {
+  font-size: 1.5em;
+  color: #666; /* Medium gray */
+  cursor: pointer;
+}
+
+.project-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.project-item {
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  font-size: 1.2em;
+  color: #666;
+  margin-right: 10px;
+}
+
+.duration {
+  margin-left: auto;
+  font-size: 0.9em;
+  color: #666;
+  margin-right: 10px;
+}
+
+.progress-bar {
+  flex-grow: 1;
+  height: 8px;
+  background-color: #ddd; /* Light gray background */
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background-color: #ffc107; /* Yellow */
+  border-radius: 4px;
+  width: 60%; /* Example width */
+}
+
+.view-all {
+  background-color: #333; /* Dark background */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  float: right;
+  margin-top: 20px;
+}
+
+
+#elapsedTimeDisplay{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #333; /* Dark gray text */
+    display:contents;
+}
+
+
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Common Dropdown Style */
+.notification, .user {
+  position: relative;
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* User & Notification Dropdown */
+.dropdown, .notif-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  min-width: 233px;
+  display: none;
+  z-index: 10;
+}
+
+/* Dropdown Items */
+.dropdown a, .notif-dropdown a {
+  display: block;
+  padding: 10px 15px;
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown a:hover, .notif-dropdown a:hover {
+  background: #f0f0f0;
+}
+
+/* Specific Notification Dropdown Style */
+.notif-dropdown {
+  right: 0;
+  left: auto;
+  text-align: left;
+}
+
+.notif-dropdown p {
+  padding: 10px;
+  font-size: 14px;
+  color: gray;
+}
+
+
+/* Show dropdown on hover */
+.notification:hover .notif-dropdown,
+.user:hover .dropdown {
+  display: block;
+}
+
+
