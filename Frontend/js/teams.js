@@ -187,7 +187,7 @@
 async function loadTeams() {
   showSpinner();
   try {
-    const response = await fetch('http://localhost:3000/api/v1/teams', {
+    const response = await fetch('http://localhost:4000/api/v1/teams', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -311,7 +311,7 @@ function getUserIdFromToken(token) {
 // Function to invite a user to a team
 async function inviteToTeam(teamId, userData) {
   try {
-    const response = await fetch(`http://localhost:3000/api/v1/teams/${teamId}/invite`, {
+    const response = await fetch(`http://localhost:4000/api/v1/teams/${teamId}/invite`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -463,7 +463,7 @@ async function showTeamDetails(teamId) {
   document.getElementById('inviteTeamMembersBtn').setAttribute('data-team-id', teamId);
   
   try {
-    const response = await fetch(`http://localhost:3000/api/v1/teams/${teamId}`, { 
+    const response = await fetch(`http://localhost:4000/api/v1/teams/${teamId}`, { 
       method: 'GET', 
       headers: { 
         'Authorization': `Bearer ${token}`, 
@@ -593,7 +593,7 @@ async function showTeamDetails(teamId) {
         showSpinner();
         
         try {
-          const response = await fetch(`http://localhost:3000/api/v1/teams/${teamId}`, {
+          const response = await fetch(`http://localhost:4000/api/v1/teams/${teamId}`, {
             method: 'DELETE',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -643,7 +643,7 @@ async function showTeamDetails(teamId) {
         showSpinner();
         
         try {
-          const response = await fetch('http://localhost:3000/api/v1/teams/create', {
+          const response = await fetch('http://localhost:4000/api/v1/teams/create', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,

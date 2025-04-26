@@ -376,7 +376,7 @@
               members: teamMembers
             });
             
-            const response = await fetch("http://localhost:3000/api/v1/projects/create", {
+            const response = await fetch("http://localhost:4000/api/v1/projects/create", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -493,7 +493,7 @@
               // Direct API call as fallback
               console.log('Falling back to direct API call');
               
-              fetch("http://localhost:3000/api/v1/projects/create", {
+              fetch("http://localhost:4000/api/v1/projects/create", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

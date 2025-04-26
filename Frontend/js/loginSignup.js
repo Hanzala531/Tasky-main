@@ -20,7 +20,7 @@ async function signup() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/v1/users/register', {
+        const response = await fetch('http://localhost:4000/api/v1/users/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password })
@@ -52,7 +52,7 @@ async function login() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/v1/users/login', {
+        const response = await fetch('http://localhost:4000/api/v1/users/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),

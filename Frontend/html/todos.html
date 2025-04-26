@@ -320,7 +320,7 @@
         const todosList = document.getElementById('todos-list');
         todosList.innerHTML = '<div class="loading">Loading todos...</div>';
 
-        fetch('http://localhost:3000/api/v1/todos', {
+        fetch('http://localhost:4000/api/v1/todos', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -409,7 +409,7 @@
           return;
         }
 
-        fetch('http://localhost:3000/api/v1/todos', {
+        fetch('http://localhost:4000/api/v1/todos', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -437,7 +437,7 @@
 
       // Function to toggle todo status - Uses the checked/unchecked API
       function toggleTodoStatus(todoId, completed) {
-        fetch(`http://localhost:3000/api/v1/todos/${todoId}`, {
+        fetch(`http://localhost:4000/api/v1/todos/${todoId}`, {
           method: 'PATCH',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -474,7 +474,7 @@
 
       // Function to delete a todo
       function deleteTodo(todoId) {
-        fetch(`http://localhost:3000/api/v1/todos/${todoId}`, {
+        fetch(`http://localhost:4000/api/v1/todos/${todoId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,

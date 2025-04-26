@@ -35,7 +35,7 @@ async function fetchTimesheets() {
       return;
     }
 
-    const response = await fetch('http://localhost:3000/api/v1/timesheets', {
+    const response = await fetch('http://localhost:4000/api/v1/timesheets', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

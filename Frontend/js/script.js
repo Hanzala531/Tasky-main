@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
   
-    fetch("http://localhost:3000/api/v1/users/time", {
+    fetch("http://localhost:4000/api/v1/users/time", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Displaying the time worked both in percentage and seconds on the dashboard
   function showTimeWorked() {
-    fetch(`http://localhost:3000/api/v1/users/time`, {
+    fetch(`http://localhost:4000/api/v1/users/time`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -229,7 +229,7 @@ function logoutUser() {
   // Show loading alert
   showCustomAlert('Logging out...', 'info');
   
-  fetch('http://localhost:3000/api/v1/users/logout', {
+  fetch('http://localhost:4000/api/v1/users/logout', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
