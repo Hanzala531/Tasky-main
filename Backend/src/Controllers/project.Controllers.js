@@ -54,7 +54,7 @@ const getsingleProject = asyncHandler(async (req, res) => {
 // Controller to create a project
 const createProject = asyncHandler(async (req, res) => {
   console.log(req.body);
-  
+
   try {
     const { name, description, members, startDate, deadline } = req.body;
 
@@ -67,24 +67,25 @@ const createProject = asyncHandler(async (req, res) => {
     }
 
     // Find users by email and get their ObjectIds
-    const memberObjects = await User.find({ email: { $in: members } }).select('_id');
+    const memberObjects = await User.find({ email: { $in: members } }).select("_id email");
 
-    if (memberObjects.length !== members.length) {
-      return res.status(400).json(new ApiResponse(400, "Some members' emails are invalid"));
-    }
+    // Extract ObjectIds and emails of valid members
+    const validMemberIds = memberObjects.map(user => user._id);
+    const validMemberEmails = memberObjects.map(user => user.email);
 
-    // Extract ObjectIds from the found users
-    const memberIds = memberObjects.map(user => user._id);
+    // Identify invalid emails
+    const invalidEmails = members.filter(email => !validMemberEmails.includes(email));
 
     // Accessing user from req.user after verifyJWT middleware
     const createdBy = req.user._id;
 
+    // Create the project with valid members
     const project = await Project.create({
       createdBy,
       name,
       description,
       startDate,
-      members: [...memberIds, createdBy], // Add the creator to the members array
+      members: [...validMemberIds, createdBy], // Add the creator to the members array
       deadline,
     });
 
@@ -92,10 +93,15 @@ const createProject = asyncHandler(async (req, res) => {
       return res.status(400).json(new ApiResponse(400, "Error in creating project"));
     }
 
+    // Prepare the response message
+    const responseMessage = invalidEmails.length > 0
+      ? `Project created successfully, but the following emails are not registered: ${invalidEmails.join(", ")}`
+      : "Project created successfully";
+
     res.status(201).json({
       success: true,
       project,
-      message: "Project created successfully",
+      message: responseMessage,
     });
   } catch (error) {
     console.error("Error creating project:", error);
