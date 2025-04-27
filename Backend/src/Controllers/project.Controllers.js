@@ -9,11 +9,11 @@ import  { User } from "../Models/user.Models.js";
 const getAllProjects = asyncHandler(async (req, res) => {
   try {
     // Ensure the user is authenticated
+    const userId = req.user._id; // Get the requesting user's ID
     if (!req.user || !req.user._id) {
       return res.status(401).json(new ApiResponse(401, "Unauthorized access"));
     }
 
-    const userId = req.user._id; // Get the requesting user's ID
 
     // Fetch only projects where the user is a member
     const projects = await Project.find({ members: userId }).select("name description startDate deadline status");
