@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { ApiError } from "../Utilities/ApiError.js";
 import { ApiResponse } from "../Utilities/ApiResponse.js";
 import { asyncHandler } from "../Utilities/asyncHandler.js";
@@ -8,22 +9,14 @@ import  { User } from "../Models/user.Models.js";
 
 const getAllProjects = asyncHandler(async (req, res) => {
   try {
-    // Ensure the user is authenticated
     const userId = req.user._id; // Get the requesting user's ID
-    if (!req.user || !req.user._id) {
-      return res.status(401).json(new ApiResponse(401, "Unauthorized access"));
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json(new ApiResponse(400, "Invalid user ID"));
-    }
 
     // Fetch only projects where the user is a member
-    const projects = await Project.find({ members: userId });
+    const projects = await Project.find ({ members: userId });
 
-    if (projects.length === 0) {
-      return res.status(404).json(new ApiResponse(404, "No projects found for this user"));
-    }
+    // if (!projects || projects.length === 0) {
+    //   return res.status(404).json(new ApiResponse(404, "No projects found for this user"));
+    // }
 
     res.status(200).json({
       success: true,
@@ -31,7 +24,7 @@ const getAllProjects = asyncHandler(async (req, res) => {
       message: "User-specific projects fetched successfully",
     });
   } catch (error) {
-    console.error("Error fetching user projects:", error.message, error.stack);
+    console.error("Error fetching user projects:", error);
     return res.status(500).json(new ApiResponse(500, "Internal server error"));
   }
 });
@@ -91,7 +84,7 @@ const createProject = asyncHandler(async (req, res) => {
       name,
       description,
       startDate,
-      members: memberIds, // Storing ObjectIds
+      members: [...memberIds, createdBy], // Add the creator to the members array
       deadline,
     });
 
