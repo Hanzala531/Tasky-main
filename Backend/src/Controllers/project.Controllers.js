@@ -14,9 +14,9 @@ const getAllProjects = asyncHandler(async (req, res) => {
     // Fetch only projects where the user is a member
     const projects = await Project.find ({ members: userId });
 
-    // if (!projects || projects.length === 0) {
-    //   return res.status(404).json(new ApiResponse(404, "No projects found for this user"));
-    // }
+    if (!projects || projects.length === 0) {
+      return res.json(new ApiResponse(404, "No projects found for this user"));
+    }
 
     res.status(200).json({
       success: true,
@@ -69,9 +69,9 @@ const createProject = asyncHandler(async (req, res) => {
     // Find users by email and get their ObjectIds
     const memberObjects = await User.find({ email: { $in: members } }).select('_id');
 
-    // if (memberObjects.length !== members.length) {
-    //   return res.status(400).json(new ApiResponse(400, "Some members' emails are invalid"));
-    // }
+    if (memberObjects.length !== members.length) {
+      return res.status(400).json(new ApiResponse(400, "Some members' emails are invalid"));
+    }
 
     // Extract ObjectIds from the found users
     const memberIds = memberObjects.map(user => user._id);
