@@ -62,6 +62,12 @@ const createProject = asyncHandler(async (req, res) => {
       return res.status(400).json(new ApiResponse(400, "Please provide all the required fields"));
     }
 
+    // check if the project is already created by the user
+    const existingProject = await Project.findOne({ name, createdBy: req.user._id });
+    if (existingProject) {
+      return res.json(new ApiResponse(400, "Project with this name already exists"));
+    }
+
     if (!Array.isArray(members) || members.length === 0) {
       return res.status(400).json(new ApiResponse(400, "Please provide at least one member"));
     }
