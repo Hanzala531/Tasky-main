@@ -14,9 +14,12 @@ const getAllProjects = asyncHandler(async (req, res) => {
       return res.status(401).json(new ApiResponse(401, "Unauthorized access"));
     }
 
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json(new ApiResponse(400, "Invalid user ID"));
+    }
 
     // Fetch only projects where the user is a member
-    const projects = await Project.find({ members: userId }).select("name description startDate deadline status");
+    const projects = await Project.find({ members: userId });
 
     if (projects.length === 0) {
       return res.status(404).json(new ApiResponse(404, "No projects found for this user"));
