@@ -14,9 +14,10 @@ const getAllProjects = asyncHandler(async (req, res) => {
     // Fetch only projects where the user is a member
     const projects = await Project.find ({ members: userId });
 
-    if (!projects || projects.length === 0) {
-      return res.json(new ApiResponse(404, "No projects found for this user"));
+    if (!projects) {
+      return res.json(new ApiResponse(201, "No projects found for this user"));
     }
+
 
     res.status(200).json({
       success: true,
