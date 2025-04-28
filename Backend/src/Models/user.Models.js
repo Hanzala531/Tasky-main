@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema(
         ref: "TimeWorked",
       }
     ],
+    isverified:{
+      type: Boolean,
+      default: false,
+    }
     
   },
   { timestamps: true }
