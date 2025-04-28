@@ -117,7 +117,7 @@ const registerUser = asyncHandler(async (req, res) => {
     if (!createdUser) {
       return res.json(
         new ApiResponse(
-          500,
+          501,
           "We are facing some issues in creating your accound \n Please try again later"
         )
       );
