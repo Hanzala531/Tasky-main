@@ -345,15 +345,12 @@ const updateUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
-    email = email.toLowerCase();
-    
-    
+    const user = await User.findOne({ email });
+
     if (!email || !password) {
       return res.status(400).json({ message: "All Fields are required" });
-      
     }
 
-    const user = await User.findOne({ email.toLowerCase() });
     if (!user) {
       return res.status(401).json({ message: "Invalid User Credentials" });
     }
