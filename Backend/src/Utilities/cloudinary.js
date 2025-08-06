@@ -1,25 +1,23 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import path from "path";
 
 // Configuration of Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,       // Fixed variable name
-  api_secret: process.env.CLOUDINARY_API_SECRET, // Fixed variable name
+  api_key: process.env.CLOUDINARY_CLOUD_API_KEY,
+  api_secret: process.env.CLOUDINARY_CLOUD_API_SECRET,
 });
 
 const uploadOnCloudinary = async (localFilePath) => {
-  const timerLabel = `uploadTime-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
-  console.time(timerLabel);
-  
   try {
     if (!localFilePath) {
       console.log("No file path provided");
       return null;
     }
 
-    // Update this check to match the correct variable names too
-    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    // Check if Cloudinary credentials are set
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_CLOUD_API_KEY || !process.env.CLOUDINARY_CLOUD_API_SECRET) {
       throw new Error("Cloudinary credentials are missing");
     }
 
@@ -29,7 +27,10 @@ const uploadOnCloudinary = async (localFilePath) => {
       return null;
     }
 
+    console.time('uploadTime');
     const response = await cloudinary.uploader.upload(localFilePath, { resource_type: "auto" });
+    console.timeEnd('uploadTime');
+
     console.log("File uploaded to Cloudinary:", response.url);
 
     // Delete the file from the server
@@ -43,8 +44,6 @@ const uploadOnCloudinary = async (localFilePath) => {
     deleteLocalFile(localFilePath);
 
     return null;
-  } finally {
-    console.timeEnd(timerLabel);
   }
 };
 

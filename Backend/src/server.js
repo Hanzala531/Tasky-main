@@ -7,7 +7,6 @@ dotenv.config({
 });
 
 // Connect to MongoDB
-
 connectDB()
 .then(() => {
     app.on('error' , ()=>{
@@ -18,6 +17,6 @@ connectDB()
     });
 })
 .catch((error) => {
-    console.log('Error connecting to MongoDB might be issue on server:', error);
+    console.log('Error connecting to MongoDB:', error);
 })
 
